@@ -2,7 +2,7 @@ import requests
 import bs4
 import re
 
-#href 추출
+                    #####href 추출
 # url = 'https://phrase.dict.naver.com/detail.nhn?targetLanguage=cn'
 # response = requests.get(url).text
 # soup = bs4.BeautifulSoup(response, 'html.parser')
@@ -41,7 +41,25 @@ import re
 #     except:
 #         pass
 
-#href 추출 끝
+                    #####href 추출 끝
+
+                    #####간체, 번체 리스트 만들기
+f = open('chi_stt.txt', 'r', encoding='utf8')
+#총 2495개
+lines = f.readlines()
+li_sim = []
+li_tra = []
+
+#간체자 리스트 만들기
+for sim in lines :
+    li_sim.append(sim[2])
+#번체자 리스트 만들기
+for tra in lines :
+    li_tra.append(tra[4])
+
+                    #####간체, 번체 리스트 만들기 끝
+
+
 
 #for url_href in li_sm_href:
 #url 분류
@@ -57,7 +75,7 @@ soup = bs4.BeautifulSoup(response,"html.parser")
 
 #토픽 추출
 topic = soup.find("ul", {"class":"lst_area"}).text
-print(topic)
+#print(topic)
 cont_kor = soup.find("div", "dic_cont").find_all("span", {"class":"info_txt"})
 cont_ch = soup.find("div", "dic_cont").find_all("span", {"class":"info_txt2"})
 
@@ -65,11 +83,20 @@ cont_ch = soup.find("div", "dic_cont").find_all("span", {"class":"info_txt2"})
 cont_li_kor = []
 for li_kor in cont_kor:
     cont_li_kor.append(li_kor.text.strip())
-print(cont_li_kor)
+#print(cont_li_kor)
 
 #중국어 대화 리스트 만들기
-cont_li_ch = []
+cont_li_ch_sim = []
+cont_li_ch_tra = []
 for li_ch in cont_ch:
-    cont_li_ch.append(li_ch.text.strip())
-print(cont_li_ch)
-
+    li_ch_text = li_ch.text.strip()
+    cont_li_ch_sim.append(li_ch_text)
+    cont_li_ch_tra.append(li_ch_text)
+    len_li_ch_text = range(len(li_ch_text))
+    for le_ch_num in len_li_ch_text :
+        if li_ch_text[le_ch_num] in li_sim :
+            re.sub(li_ch_text[le_ch_num], li_tra[li_sim.index(li_ch_text[le_ch_num])], li_ch_text)
+                #(print(li_ch_text[le_ch_num], li_sim.index(li_ch_text[le_ch_num]), li_tra[li_sim.index(li_ch_text[le_ch_num])])
+        else :
+            continue
+    print(li_ch_text)
