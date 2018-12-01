@@ -109,6 +109,8 @@ for url_href in li_sm_href:
         cont_li_kor_ran.append(ran_cont_li_kor)
 
     print(topic)
-    print(cont_li_kor)
-    print(cont_li_kor_ran)
-    print(cont_li_ch_tra)
+    a = range(len(cont_li_kor))
+    for b in a:
+        print(cont_li_kor[b])
+        print(cont_li_kor_ran[b])
+        print(cont_li_ch_tra[b])
